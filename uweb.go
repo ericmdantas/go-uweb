@@ -60,3 +60,7 @@ func (uw *UWeb) Options(path string, handler http.HandlerFunc) http.HandlerFunc 
 		handler.ServeHTTP(w, r)
 	}
 }
+
+func (uw *UWeb) Run(port string) error {
+	return http.ListenAndServe(port, nil)
+}
