@@ -1,9 +1,6 @@
 package uweb
 
-import (
-	"fmt"
-	"net/http"
-)
+import "net/http"
 
 const (
 	get     = "GET"
@@ -17,14 +14,27 @@ const (
 	trace   = "TRACE"
 )
 
+type node struct {
+	
+}
+
 type UWeb struct {
+	node *node
 }
 
 func New() *UWeb {
 	return &UWeb{}
 }
 
+func (uw *UWeb) Get(path string, fn http.HandlerFunc) {
+	uw.addNode(path, fn)
+}
+
 func (uw *UWeb) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r)
 	w.Write([]byte("!"))
+}
+
+func (uw *UWeb) addNode(path string, handler http.HandlerFunc) {
+	var n map[string]http.HandlerFunc
+	uw.node = append(uw.node, handler})
 }
