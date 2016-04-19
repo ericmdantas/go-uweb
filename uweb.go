@@ -19,6 +19,10 @@ const (
 type UWeb struct {
 }
 
+func New() *UWeb {
+	return &UWeb{}
+}
+
 func (uw *UWeb) Get(path string, handler http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		handler.ServeHTTP(w, r)
