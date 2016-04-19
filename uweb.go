@@ -26,4 +26,5 @@ func New() *UWeb {
 
 func (uw *UWeb) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r)
+	w.Write([]byte("!"))
 }
