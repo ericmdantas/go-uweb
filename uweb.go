@@ -15,11 +15,12 @@ const (
 )
 
 type node struct {
-	
+	method, path string
+	handlerFn    http.HandlerFunc
 }
 
 type UWeb struct {
-	node *node
+	tree []node
 }
 
 func New() *UWeb {
@@ -27,14 +28,17 @@ func New() *UWeb {
 }
 
 func (uw *UWeb) Get(path string, fn http.HandlerFunc) {
-	uw.addNode(path, fn)
+	uw.addNode(get, path, fn)
 }
 
 func (uw *UWeb) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("!"))
+	for _, v := range uw.tree {
+		if v.path == r.URL.Path {
+			v.handlerFn(w, r)
+		}
+	}
 }
 
-func (uw *UWeb) addNode(path string, handler http.HandlerFunc) {
-	var n map[string]http.HandlerFunc
-	uw.node = append(uw.node, handler})
+func (uw *UWeb) addNode(method, path string, handlerFn http.HandlerFunc) {
+	uw.tree = append(uw.tree, node{method: method, path: path, handlerFn: handlerFn})
 }
