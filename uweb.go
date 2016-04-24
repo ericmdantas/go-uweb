@@ -67,7 +67,7 @@ func (uw *UWeb) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (uw *UWeb) addNode(method, path string, handlerFn UWebHandlerFunc) {
-	uw.tree = append(uw.tree, node{method: method, path: path, handlerFn: handlerFn})
+	uw.tree = append(uw.tree, node{method: method, path: NormalizePath(path), handlerFn: handlerFn})
 }
 
 func (uw *UWeb) findHandler(r *http.Request) node {
