@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func BenchmarkGet(b *testing.B) {
+func BenchmarkGetSimple(b *testing.B) {
 	u := New()
 	msg := []byte("!")
 
@@ -16,7 +16,7 @@ func BenchmarkGet(b *testing.B) {
 	}
 }
 
-func BenchmarkPost(b *testing.B) {
+func BenchmarkPostSimple(b *testing.B) {
 	u := New()
 	msg := []byte("!")
 
@@ -27,7 +27,7 @@ func BenchmarkPost(b *testing.B) {
 	}
 }
 
-func BenchmarkPut(b *testing.B) {
+func BenchmarkPutSimple(b *testing.B) {
 	u := New()
 	msg := []byte("!")
 
@@ -38,7 +38,7 @@ func BenchmarkPut(b *testing.B) {
 	}
 }
 
-func BenchmarkPatch(b *testing.B) {
+func BenchmarkPatchSimple(b *testing.B) {
 	u := New()
 	msg := []byte("!")
 
@@ -49,7 +49,7 @@ func BenchmarkPatch(b *testing.B) {
 	}
 }
 
-func BenchmarkDelete(b *testing.B) {
+func BenchmarkDeleteSimple(b *testing.B) {
 	u := New()
 	msg := []byte("!")
 
@@ -60,7 +60,7 @@ func BenchmarkDelete(b *testing.B) {
 	}
 }
 
-func BenchmarkOptions(b *testing.B) {
+func BenchmarkOptionsSimple(b *testing.B) {
 	u := New()
 	msg := []byte("!")
 
@@ -71,7 +71,7 @@ func BenchmarkOptions(b *testing.B) {
 	}
 }
 
-func BenchmarkConnect(b *testing.B) {
+func BenchmarkConnectSimple(b *testing.B) {
 	u := New()
 	msg := []byte("!")
 
@@ -82,7 +82,7 @@ func BenchmarkConnect(b *testing.B) {
 	}
 }
 
-func BenchmarkTrace(b *testing.B) {
+func BenchmarkTraceSimple(b *testing.B) {
 	u := New()
 	msg := []byte("!")
 
