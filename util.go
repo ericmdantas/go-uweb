@@ -3,6 +3,8 @@ package uweb
 import "strings"
 
 func NormalizePath(path string) string {
+	path = strings.Replace(strings.ToLower(path), " ", "", -1)
+
 	if len(path) == 0 {
 		path = "/"
 	}
@@ -16,5 +18,5 @@ func NormalizePath(path string) string {
 		path = tmp
 	}
 
-	return strings.ToLower(path)
+	return path
 }

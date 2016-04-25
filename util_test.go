@@ -49,6 +49,18 @@ var TestNormalizePathInfo = []struct {
 		in:  "/Abcdef/:id/",
 		out: "/abcdef/:id",
 	},
+	{
+		in:  "/Abcdef/:id/          ",
+		out: "/abcdef/:id",
+	},
+	{
+		in:  "        /Abcdef/:id/          ",
+		out: "/abcdef/:id",
+	},
+	{
+		in:  " /Abcdef/:id/ ",
+		out: "/abcdef/:id",
+	},
 }
 
 func TestNormalizePath(t *testing.T) {
