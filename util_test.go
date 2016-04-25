@@ -30,6 +30,18 @@ var TestNormalizePathInfo = []struct {
 		out: "/e",
 	},
 	{
+		in:  "Abcdef/",
+		out: "/abcdef",
+	},
+	{
+		in:  "Abcdef/:id/:s/:x",
+		out: "/abcdef/:id/:s/:x",
+	},
+	{
+		in:  "Abcdef/:id/:s/:x",
+		out: "/abcdef/:id/:s/:x",
+	},
+	{
 		in:  "/Abcdef/",
 		out: "/abcdef",
 	},
@@ -70,5 +82,11 @@ func BenchmarkNormalizePathSlashEnding(b *testing.B) {
 func BenchmarkNormalizePathCorrectSlash(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		NormalizePath("/api/todos/:id")
+	}
+}
+
+func BenchmarkNormalizePathLong(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		NormalizePath("/api/todos/:id/:name/:something/:this/:that/:action/:yo")
 	}
 }
