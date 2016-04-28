@@ -4,6 +4,14 @@ import (
 	"net/url"
 )
 
+func newNode(method, path string, fn UWebHandlerFunc) *Node {
+	return &Node{
+		method: method,
+		path:   NormalizePath(path),
+		handle: fn,
+	}
+}
+
 type Node struct {
 	path        string
 	method      string

@@ -17,8 +17,6 @@ func TestParseSimpleSingleSlash(t *testing.T) {
 	u := "/"
 	n := Node{path: "/"}
 
-	n.Parse()
-
 	if n.path != u {
 		t.Errorf("expected path to equal %s, but got %s", u, n.path)
 	}
