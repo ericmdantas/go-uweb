@@ -16,13 +16,13 @@ const (
 
 type UWebHandlerFunc func(w http.ResponseWriter, r *http.Request)
 
-type node struct {
-	method, path string
-	handlerFn    UWebHandlerFunc
-}
-
 type UWeb struct {
 	tree []node
+}
+
+type node struct {
+	method, path string
+	handle       UWebHandlerFunc
 }
 
 func New() *UWeb {
@@ -63,11 +63,11 @@ func (uw *UWeb) Trace(path string, fn UWebHandlerFunc) {
 
 func (uw *UWeb) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	n := uw.findHandler(r)
-	n.handlerFn(w, r)
+	n.handle(w, r)
 }
 
 func (uw *UWeb) addNode(method, path string, handlerFn UWebHandlerFunc) {
-	uw.tree = append(uw.tree, node{method: method, path: NormalizePath(path), handlerFn: handlerFn})
+	uw.tree = append(uw.tree, node{method: method, path: NormalizePath(path), handle: handlerFn})
 }
 
 func (uw *UWeb) findHandler(r *http.Request) node {
