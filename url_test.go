@@ -2,7 +2,7 @@ package uweb
 
 import "testing"
 
-var TestNormalizePathInfo = []struct {
+var tableNormalizePathInfo = []struct {
 	in, out string
 }{
 	{
@@ -64,11 +64,11 @@ var TestNormalizePathInfo = []struct {
 }
 
 func TestNormalizePath(t *testing.T) {
-	for _, v := range TestNormalizePathInfo {
+	for _, v := range tableNormalizePathInfo {
 		r := NormalizePath(v.in)
 
 		if v.out != r {
-			t.Errorf("expected %s but got %s", v.out, r)
+			t.Errorf("Expected %s but got %s", v.out, r)
 		}
 	}
 }

@@ -2,18 +2,6 @@ package uweb
 
 import "net/http"
 
-const (
-	get     = "GET"
-	head    = "HEAD"
-	post    = "POST"
-	put     = "PUT"
-	patch   = "PATCH"
-	delete  = "DELETE"
-	connect = "CONNECT"
-	options = "OPTIONS"
-	trace   = "TRACE"
-)
-
 type UWebHandlerFunc func(w http.ResponseWriter, r *http.Request)
 
 type UWeb struct {
@@ -25,35 +13,35 @@ func New() *UWeb {
 }
 
 func (uw *UWeb) Get(path string, fn UWebHandlerFunc) {
-	uw.addNode(get, path, fn)
+	uw.addNode(GET, path, fn)
 }
 
 func (uw *UWeb) Post(path string, fn UWebHandlerFunc) {
-	uw.addNode(post, path, fn)
+	uw.addNode(POST, path, fn)
 }
 
 func (uw *UWeb) Put(path string, fn UWebHandlerFunc) {
-	uw.addNode(put, path, fn)
+	uw.addNode(PUT, path, fn)
 }
 
 func (uw *UWeb) Patch(path string, fn UWebHandlerFunc) {
-	uw.addNode(patch, path, fn)
+	uw.addNode(PATCH, path, fn)
 }
 
 func (uw *UWeb) Delete(path string, fn UWebHandlerFunc) {
-	uw.addNode(delete, path, fn)
+	uw.addNode(DELETE, path, fn)
 }
 
 func (uw *UWeb) Options(path string, fn UWebHandlerFunc) {
-	uw.addNode(options, path, fn)
+	uw.addNode(OPTIONS, path, fn)
 }
 
 func (uw *UWeb) Connect(path string, fn UWebHandlerFunc) {
-	uw.addNode(connect, path, fn)
+	uw.addNode(CONNECT, path, fn)
 }
 
 func (uw *UWeb) Trace(path string, fn UWebHandlerFunc) {
-	uw.addNode(trace, path, fn)
+	uw.addNode(TRACE, path, fn)
 }
 
 func (uw *UWeb) ServeHTTP(w http.ResponseWriter, r *http.Request) {
