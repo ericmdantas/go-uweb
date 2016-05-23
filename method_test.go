@@ -90,6 +90,9 @@ var tableNotExistingMethods = []string{
 	"",
 	"git",
 	"headi",
+	"hea",
+	"heas",
+	"putz",
 }
 
 func BenchmarkNormalizeMethod(b *testing.B) {
