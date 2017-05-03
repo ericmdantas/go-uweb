@@ -16,7 +16,7 @@ const (
 	TRACE   = "TRACE"
 )
 
-func NormalizeMethod(verb string) string {
+func normalizeMethod(verb string) string {
 	v := strings.ToUpper(verb)
 	v = strings.TrimSpace(v)
 
@@ -24,7 +24,9 @@ func NormalizeMethod(verb string) string {
 		panic("Invalid verb: " + v)
 	}
 
-	if (v != GET) && (v != HEAD) && (v != POST) && (v != PUT) && (v != PATCH) && (v != DELETE) && (v != CONNECT) && (v != OPTIONS) && (v != TRACE) {
+	if (v != GET) && (v != HEAD) && (v != POST) &&
+		(v != PUT) && (v != PATCH) && (v != DELETE) &&
+		(v != CONNECT) && (v != OPTIONS) && (v != TRACE) {
 		panic("Invalid verb: " + v)
 	}
 

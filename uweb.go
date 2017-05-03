@@ -12,35 +12,39 @@ func New() *UWeb {
 	return &UWeb{}
 }
 
-func (uw *UWeb) Get(path string, fn UWebHandlerFunc) {
+func (uw *UWeb) GET(path string, fn UWebHandlerFunc) {
 	uw.addNode(GET, path, fn)
 }
 
-func (uw *UWeb) Post(path string, fn UWebHandlerFunc) {
+func (uw *UWeb) POST(path string, fn UWebHandlerFunc) {
 	uw.addNode(POST, path, fn)
 }
 
-func (uw *UWeb) Put(path string, fn UWebHandlerFunc) {
+func (uw *UWeb) PUT(path string, fn UWebHandlerFunc) {
 	uw.addNode(PUT, path, fn)
 }
 
-func (uw *UWeb) Patch(path string, fn UWebHandlerFunc) {
+func (uw *UWeb) HEAD(path string, fn UWebHandlerFunc) {
+	uw.addNode(HEAD, path, fn)
+}
+
+func (uw *UWeb) PATCH(path string, fn UWebHandlerFunc) {
 	uw.addNode(PATCH, path, fn)
 }
 
-func (uw *UWeb) Delete(path string, fn UWebHandlerFunc) {
+func (uw *UWeb) DELETE(path string, fn UWebHandlerFunc) {
 	uw.addNode(DELETE, path, fn)
 }
 
-func (uw *UWeb) Options(path string, fn UWebHandlerFunc) {
+func (uw *UWeb) OPTIONS(path string, fn UWebHandlerFunc) {
 	uw.addNode(OPTIONS, path, fn)
 }
 
-func (uw *UWeb) Connect(path string, fn UWebHandlerFunc) {
+func (uw *UWeb) CONNECT(path string, fn UWebHandlerFunc) {
 	uw.addNode(CONNECT, path, fn)
 }
 
-func (uw *UWeb) Trace(path string, fn UWebHandlerFunc) {
+func (uw *UWeb) TRACE(path string, fn UWebHandlerFunc) {
 	uw.addNode(TRACE, path, fn)
 }
 

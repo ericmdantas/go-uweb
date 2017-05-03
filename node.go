@@ -8,8 +8,8 @@ type Node struct {
 
 func newNode(method, path string, fn UWebHandlerFunc) *Node {
 	return &Node{
-		method: NormalizeMethod(method),
-		path:   NormalizePath(path),
+		method: normalizeMethod(method),
+		path:   normalizePath(path),
 		handle: fn,
 	}
 }

@@ -2,7 +2,7 @@ package uweb
 
 import "testing"
 
-var tableNormalizePathInfo = []struct {
+var tablenormalizePathInfo = []struct {
 	in, out string
 }{
 	{
@@ -64,8 +64,8 @@ var tableNormalizePathInfo = []struct {
 }
 
 func TestNormalizePath(t *testing.T) {
-	for _, v := range tableNormalizePathInfo {
-		r := NormalizePath(v.in)
+	for _, v := range tablenormalizePathInfo {
+		r := normalizePath(v.in)
 
 		if v.out != r {
 			t.Errorf("Expected %s but got %s", v.out, r)
@@ -73,32 +73,32 @@ func TestNormalizePath(t *testing.T) {
 	}
 }
 
-func BenchmarkNormalizePathEmptyString(b *testing.B) {
+func BenchmarNormalizePathEmptyString(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		NormalizePath("")
+		normalizePath("")
 	}
 }
 
 func BenchmarkNormalizePathOnlySlash(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		NormalizePath("/")
+		normalizePath("/")
 	}
 }
 
 func BenchmarkNormalizePathSlashEnding(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		NormalizePath("/abc/")
+		normalizePath("/abc/")
 	}
 }
 
 func BenchmarkNormalizePathCorrectSlash(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		NormalizePath("/api/todos/:id")
+		normalizePath("/api/todos/:id")
 	}
 }
 
 func BenchmarkNormalizePathLong(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		NormalizePath("/api/todos/:id/:name/:something/:this/:that/:action/:yo")
+		normalizePath("/api/todos/:id/:name/:something/:this/:that/:action/:yo")
 	}
 }

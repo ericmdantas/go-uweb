@@ -113,8 +113,8 @@ func BenchmarkNewNode(b *testing.B) {
 	}
 }
 
-func TestNewNodeNormalizePath(t *testing.T) {
-	for _, v := range tableNormalizePathInfo {
+func TestNewNodenormalizePath(t *testing.T) {
+	for _, v := range tablenormalizePathInfo {
 		n := newNode("get", v.in, func(w http.ResponseWriter, r *http.Request) {})
 
 		if n.path != v.out {
@@ -123,7 +123,7 @@ func TestNewNodeNormalizePath(t *testing.T) {
 	}
 }
 
-func TestNewNodeNormalizeMethod(t *testing.T) {
+func TestNewNodenormalizeMethod(t *testing.T) {
 	for _, v := range tableNewNodeNotEmptyExistingMethodNormalize {
 		n := newNode(v.in, "/", func(w http.ResponseWriter, r *http.Request) {})
 

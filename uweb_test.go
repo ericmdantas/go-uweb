@@ -5,89 +5,100 @@ import (
 	"testing"
 )
 
-func BenchmarkGetSimple(b *testing.B) {
+func BenchmarkGETSimple(b *testing.B) {
 	u := New()
 	msg := []byte("!")
 
 	for i := 0; i < b.N; i++ {
-		u.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		u.GET("/", func(w http.ResponseWriter, r *http.Request) {
 			w.Write(msg)
 		})
 	}
 }
 
-func BenchmarkPostSimple(b *testing.B) {
+func BenchmarkPOSTSimple(b *testing.B) {
 	u := New()
 	msg := []byte("!")
 
 	for i := 0; i < b.N; i++ {
-		u.Post("/", func(w http.ResponseWriter, r *http.Request) {
+		u.POST("/", func(w http.ResponseWriter, r *http.Request) {
 			w.Write(msg)
 		})
 	}
 }
 
-func BenchmarkPutSimple(b *testing.B) {
+func BenchmarkPUTSimple(b *testing.B) {
 	u := New()
 	msg := []byte("!")
 
 	for i := 0; i < b.N; i++ {
-		u.Put("/", func(w http.ResponseWriter, r *http.Request) {
+		u.PUT("/", func(w http.ResponseWriter, r *http.Request) {
 			w.Write(msg)
 		})
 	}
 }
 
-func BenchmarkPatchSimple(b *testing.B) {
+func BenchmarkPATCHSimple(b *testing.B) {
 	u := New()
 	msg := []byte("!")
 
 	for i := 0; i < b.N; i++ {
-		u.Patch("/", func(w http.ResponseWriter, r *http.Request) {
+		u.PATCH("/", func(w http.ResponseWriter, r *http.Request) {
 			w.Write(msg)
 		})
 	}
 }
 
-func BenchmarkDeleteSimple(b *testing.B) {
+func BenchmarkHEADSimple(b *testing.B) {
 	u := New()
 	msg := []byte("!")
 
 	for i := 0; i < b.N; i++ {
-		u.Delete("/", func(w http.ResponseWriter, r *http.Request) {
+		u.HEAD("/", func(w http.ResponseWriter, r *http.Request) {
 			w.Write(msg)
 		})
 	}
 }
 
-func BenchmarkOptionsSimple(b *testing.B) {
+func BenchmarkDELETESimple(b *testing.B) {
 	u := New()
 	msg := []byte("!")
 
 	for i := 0; i < b.N; i++ {
-		u.Options("/", func(w http.ResponseWriter, r *http.Request) {
+		u.DELETE("/", func(w http.ResponseWriter, r *http.Request) {
 			w.Write(msg)
 		})
 	}
 }
 
-func BenchmarkConnectSimple(b *testing.B) {
+func BenchmarkOPTIONSSimple(b *testing.B) {
 	u := New()
 	msg := []byte("!")
 
 	for i := 0; i < b.N; i++ {
-		u.Connect("/", func(w http.ResponseWriter, r *http.Request) {
+		u.OPTIONS("/", func(w http.ResponseWriter, r *http.Request) {
 			w.Write(msg)
 		})
 	}
 }
 
-func BenchmarkTraceSimple(b *testing.B) {
+func BenchmarkCONNECTSimple(b *testing.B) {
 	u := New()
 	msg := []byte("!")
 
 	for i := 0; i < b.N; i++ {
-		u.Connect("/", func(w http.ResponseWriter, r *http.Request) {
+		u.CONNECT("/", func(w http.ResponseWriter, r *http.Request) {
+			w.Write(msg)
+		})
+	}
+}
+
+func BenchmarkTRACESimple(b *testing.B) {
+	u := New()
+	msg := []byte("!")
+
+	for i := 0; i < b.N; i++ {
+		u.TRACE("/", func(w http.ResponseWriter, r *http.Request) {
 			w.Write(msg)
 		})
 	}

@@ -97,13 +97,13 @@ var tableNotExistingMethods = []string{
 
 func BenchmarkNormalizeMethod(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		NormalizeMethod("get    ")
+		normalizeMethod("get    ")
 	}
 }
 
 func TestNormalizeExistingMethods(t *testing.T) {
 	for _, v := range tableNotEmptyExistingMethodNormalize {
-		r := NormalizeMethod(v.in)
+		r := normalizeMethod(v.in)
 
 		if r != v.out {
 			t.Errorf("Expected %s to equal %s", v.out, r)
@@ -113,7 +113,7 @@ func TestNormalizeExistingMethods(t *testing.T) {
 
 func TestNormalizeExistingMethodsWithSillyErrors(t *testing.T) {
 	for _, v := range tableExistingMethodWithSillyErrorsNormalize {
-		r := NormalizeMethod(v.in)
+		r := normalizeMethod(v.in)
 
 		if r != v.out {
 			t.Errorf("Expected %s, but got: %s", v.out, r)
@@ -135,6 +135,6 @@ func TestNormalizeNotExistingMethods(t *testing.T) {
 			err = recover()
 		}()
 
-		NormalizeMethod(v)
+		normalizeMethod(v)
 	}
 }
