@@ -96,45 +96,49 @@ var tableNotExistingMethods = []string{
 }
 
 func BenchmarkNormalizeMethod(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		normalizeMethod("get    ")
-	}
+	b.Run("simple", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			normalizeMethod("get    ")
+		}
+	})
 }
 
 func TestNormalizeExistingMethods(t *testing.T) {
-	for _, v := range tableNotEmptyExistingMethodNormalize {
-		r := normalizeMethod(v.in)
+	t.Run("existing_methods", func(t *testing.T) {
+		for _, v := range tableNotEmptyExistingMethodNormalize {
+			r := normalizeMethod(v.in)
 
-		if r != v.out {
-			t.Errorf("Expected %s to equal %s", v.out, r)
-		}
-	}
-}
-
-func TestNormalizeExistingMethodsWithSillyErrors(t *testing.T) {
-	for _, v := range tableExistingMethodWithSillyErrorsNormalize {
-		r := normalizeMethod(v.in)
-
-		if r != v.out {
-			t.Errorf("Expected %s, but got: %s", v.out, r)
-		}
-	}
-}
-
-func TestNormalizeNotExistingMethods(t *testing.T) {
-	for _, v := range tableNotExistingMethods {
-		var err interface{}
-
-		defer func() {
-			if err == nil {
-				t.Errorf("Should've paniced")
+			if r != v.out {
+				t.Errorf("Expected %s to equal %s", v.out, r)
 			}
-		}()
+		}
+	})
 
-		defer func() {
-			err = recover()
-		}()
+	t.Run("methods_silly_errors", func(t *testing.T) {
+		for _, v := range tableExistingMethodWithSillyErrorsNormalize {
+			r := normalizeMethod(v.in)
 
-		normalizeMethod(v)
-	}
+			if r != v.out {
+				t.Errorf("Expected %s, but got: %s", v.out, r)
+			}
+		}
+	})
+
+	t.Run("non_existant_methods", func(t *testing.T) {
+		for _, v := range tableNotExistingMethods {
+			var err interface{}
+
+			defer func() {
+				if err == nil {
+					t.Errorf("Should've paniced")
+				}
+			}()
+
+			defer func() {
+				err = recover()
+			}()
+
+			normalizeMethod(v)
+		}
+	})
 }

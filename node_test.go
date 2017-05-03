@@ -108,27 +108,33 @@ var tableNewNodeNotEmptyExistingMethodNormalize = []struct {
 }
 
 func BenchmarkNewNode(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		newNode("Get", "/", func(w http.ResponseWriter, r *http.Request) {})
-	}
+	b.Run("simple", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			newNode("Get", "/", func(w http.ResponseWriter, r *http.Request) {})
+		}
+	})
 }
 
-func TestNewNodenormalizePath(t *testing.T) {
-	for _, v := range tablenormalizePathInfo {
-		n := newNode("get", v.in, func(w http.ResponseWriter, r *http.Request) {})
+func TestNewNodeNormalizePath(t *testing.T) {
+	t.Run("simple", func(t *testing.T) {
+		for _, v := range tablenormalizePathInfo {
+			n := newNode("get", v.in, func(w http.ResponseWriter, r *http.Request) {})
 
-		if n.path != v.out {
-			t.Errorf("Expected %s, but got: %s", v.out, n.path)
+			if n.path != v.out {
+				t.Errorf("Expected %s, but got: %s", v.out, n.path)
+			}
 		}
-	}
+	})
 }
 
-func TestNewNodenormalizeMethod(t *testing.T) {
-	for _, v := range tableNewNodeNotEmptyExistingMethodNormalize {
-		n := newNode(v.in, "/", func(w http.ResponseWriter, r *http.Request) {})
+func TestNewNodeNormalizeMethod(t *testing.T) {
+	t.Run("simple", func(t *testing.T) {
+		for _, v := range tableNewNodeNotEmptyExistingMethodNormalize {
+			n := newNode(v.in, "/", func(w http.ResponseWriter, r *http.Request) {})
 
-		if n.method != v.out {
-			t.Errorf("Expected %s to equal %s", v.out, n.method)
+			if n.method != v.out {
+				t.Errorf("Expected %s to equal %s", v.out, n.method)
+			}
 		}
-	}
+	})
 }

@@ -64,41 +64,45 @@ var tablenormalizePathInfo = []struct {
 }
 
 func TestNormalizePath(t *testing.T) {
-	for _, v := range tablenormalizePathInfo {
-		r := normalizePath(v.in)
+	t.Run("simple", func(t *testing.T) {
+		for _, v := range tablenormalizePathInfo {
+			r := normalizePath(v.in)
 
-		if v.out != r {
-			t.Errorf("Expected %s but got %s", v.out, r)
+			if v.out != r {
+				t.Errorf("Expected %s but got %s", v.out, r)
+			}
 		}
-	}
+	})
 }
 
-func BenchmarNormalizePathEmptyString(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		normalizePath("")
-	}
-}
+func BenchmarNormalizePath(b *testing.B) {
+	b.Run("empty_string", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			normalizePath("")
+		}
+	})
 
-func BenchmarkNormalizePathOnlySlash(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		normalizePath("/")
-	}
-}
+	b.Run("only_slash", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			normalizePath("/")
+		}
+	})
 
-func BenchmarkNormalizePathSlashEnding(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		normalizePath("/abc/")
-	}
-}
+	b.Run("slash_ending", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			normalizePath("/abc/")
+		}
+	})
 
-func BenchmarkNormalizePathCorrectSlash(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		normalizePath("/api/todos/:id")
-	}
-}
+	b.Run("correct_slash", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			normalizePath("/api/todos/:id")
+		}
+	})
 
-func BenchmarkNormalizePathLong(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		normalizePath("/api/todos/:id/:name/:something/:this/:that/:action/:yo")
-	}
+	b.Run("long", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			normalizePath("/api/todos/:id/:name/:something/:this/:that/:action/:yo")
+		}
+	})
 }
