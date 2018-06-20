@@ -5,8 +5,46 @@ import (
 	"testing"
 )
 
-func BenchmarkGET(b *testing.B) {
-	b.Run("simple", func(b *testing.B) {
+var tableTestAddNodes = []struct {
+	method    string
+	path      string
+	fnhandler UWebHandlerFunc
+	want      []*Node
+}{
+	{
+		method:    "GET",
+		path:      "/hello_world",
+		fnhandler: func(rw http.ResponseWriter, rq *http.Request) {},
+		want: []*Node{
+			{
+				method: "GET",
+				path:   "/hello_world",
+				handle: func(rw http.ResponseWriter, rq *http.Request) {},
+			},
+		},
+	},
+}
+
+func TestAddNode(t *testing.T) {
+	t.Run("simple", func(t *testing.T) {
+		for _, v := range tableTestAddNodes {
+			u := New()
+
+			u.addNode(v.method, v.path, v.fnhandler)
+
+			if u.tree[0].method != v.want[0].method {
+				t.Errorf("Different method. Want %s, but got %s", v.want[0].method, u.tree[0].method)
+			}
+
+			if u.tree[0].path != v.want[0].path {
+				t.Errorf("Different path. Want %s, but got %s", v.want[0].path, u.tree[0].path)
+			}
+		}
+	})
+}
+
+func BenchmarkMethods(b *testing.B) {
+	b.Run("GET", func(b *testing.B) {
 		u := New()
 		msg := []byte("!")
 
@@ -16,10 +54,8 @@ func BenchmarkGET(b *testing.B) {
 			})
 		}
 	})
-}
 
-func BenchmarkPOST(b *testing.B) {
-	b.Run("simple", func(b *testing.B) {
+	b.Run("POST", func(b *testing.B) {
 		u := New()
 		msg := []byte("!")
 
@@ -29,10 +65,8 @@ func BenchmarkPOST(b *testing.B) {
 			})
 		}
 	})
-}
 
-func BenchmarkPUT(b *testing.B) {
-	b.Run("simple", func(b *testing.B) {
+	b.Run("PUT", func(b *testing.B) {
 		u := New()
 		msg := []byte("!")
 
@@ -42,10 +76,8 @@ func BenchmarkPUT(b *testing.B) {
 			})
 		}
 	})
-}
 
-func BenchmarkPATCH(b *testing.B) {
-	b.Run("simple", func(b *testing.B) {
+	b.Run("PATCH", func(b *testing.B) {
 		u := New()
 		msg := []byte("!")
 
@@ -55,10 +87,8 @@ func BenchmarkPATCH(b *testing.B) {
 			})
 		}
 	})
-}
 
-func BenchmarkHEAD(b *testing.B) {
-	b.Run("simple", func(b *testing.B) {
+	b.Run("HEAD", func(b *testing.B) {
 		u := New()
 		msg := []byte("!")
 
@@ -68,10 +98,8 @@ func BenchmarkHEAD(b *testing.B) {
 			})
 		}
 	})
-}
 
-func BenchmarkDELETE(b *testing.B) {
-	b.Run("simple", func(b *testing.B) {
+	b.Run("DELETE", func(b *testing.B) {
 		u := New()
 		msg := []byte("!")
 
@@ -81,10 +109,8 @@ func BenchmarkDELETE(b *testing.B) {
 			})
 		}
 	})
-}
 
-func BenchmarkOPTIONS(b *testing.B) {
-	b.Run("simple", func(b *testing.B) {
+	b.Run("OPTIONS", func(b *testing.B) {
 		u := New()
 		msg := []byte("!")
 
@@ -94,10 +120,8 @@ func BenchmarkOPTIONS(b *testing.B) {
 			})
 		}
 	})
-}
 
-func BenchmarkCONNECT(b *testing.B) {
-	b.Run("simple", func(b *testing.B) {
+	b.Run("CONNECT", func(b *testing.B) {
 		u := New()
 		msg := []byte("!")
 
@@ -107,10 +131,8 @@ func BenchmarkCONNECT(b *testing.B) {
 			})
 		}
 	})
-}
 
-func BenchmarkTRACE(b *testing.B) {
-	b.Run("simple", func(b *testing.B) {
+	b.Run("TRACE", func(b *testing.B) {
 		u := New()
 		msg := []byte("!")
 
