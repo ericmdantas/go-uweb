@@ -14,12 +14,12 @@ var tableTestAddNodes = []struct {
 	{
 		method:    "GET",
 		path:      "/hello_world",
-		fnhandler: func(rw http.ResponseWriter, rq *http.Request) {},
+		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
 		want: []*Node{
 			{
 				method: "GET",
 				path:   "/hello_world",
-				handle: func(rw http.ResponseWriter, rq *http.Request) {},
+				handle: func(w http.ResponseWriter, r *http.Request) {},
 			},
 		},
 	},

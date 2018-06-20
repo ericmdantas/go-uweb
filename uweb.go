@@ -5,7 +5,7 @@ import "net/http"
 type UWebHandlerFunc func(w http.ResponseWriter, r *http.Request)
 
 type UWeb struct {
-	tree []*Node
+	tree []Node
 }
 
 func New() *UWeb {
@@ -50,7 +50,14 @@ func (uw *UWeb) TRACE(path string, fn UWebHandlerFunc) {
 
 func (uw *UWeb) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	n := uw.findHandler(r)
-	n.handle(w, r)
+
+	if n != nil {
+		n.handle(w, r)
+		return
+	}
+
+	w.WriteHeader(http.StatusNotFound)
+	w.Write([]byte("404"))
 }
 
 func (uw *UWeb) addNode(method, path string, handlerFn UWebHandlerFunc) {
@@ -60,7 +67,7 @@ func (uw *UWeb) addNode(method, path string, handlerFn UWebHandlerFunc) {
 func (uw *UWeb) findHandler(r *http.Request) *Node {
 	for _, n := range uw.tree {
 		if n.isItForMe(r) {
-			return n
+			return &n
 		}
 	}
 

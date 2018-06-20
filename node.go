@@ -9,8 +9,8 @@ const (
 	maskIdentifier = ":"
 )
 
-func newNode(method, path string, fn UWebHandlerFunc) *Node {
-	return &Node{
+func newNode(method, path string, fn UWebHandlerFunc) Node {
+	return Node{
 		method: normalizeMethod(method),
 		path:   normalizePath(path),
 		handle: fn,
