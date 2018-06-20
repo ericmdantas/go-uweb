@@ -9,6 +9,14 @@ const (
 	maskIdentifier = ":"
 )
 
+func newNode(method, path string, fn UWebHandlerFunc) *Node {
+	return &Node{
+		method: normalizeMethod(method),
+		path:   normalizePath(path),
+		handle: fn,
+	}
+}
+
 type Node struct {
 	path   string
 	method string
@@ -48,12 +56,4 @@ func (n Node) isItForMe(r *http.Request) bool {
 	mountedPathString = strings.Join(mountedPathParts, "/")
 
 	return mountedPathString == r.URL.Path
-}
-
-func newNode(method, path string, fn UWebHandlerFunc) *Node {
-	return &Node{
-		method: normalizeMethod(method),
-		path:   normalizePath(path),
-		handle: fn,
-	}
 }
