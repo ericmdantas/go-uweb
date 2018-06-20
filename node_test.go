@@ -2,6 +2,7 @@ package uweb
 
 import (
 	"net/http"
+	"net/url"
 	"testing"
 )
 
@@ -107,6 +108,58 @@ var tableNewNodeNotEmptyExistingMethodNormalize = []struct {
 	},
 }
 
+var tableIsItForMe = []struct {
+	method    string
+	path      string
+	fnhandler UWebHandlerFunc
+	req       *http.Request
+	want      bool
+}{
+	{
+		method:    "GET",
+		path:      "/alo1",
+		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
+		req:       nil,
+		want:      false,
+	},
+	{
+		method:    "GET",
+		path:      "/alo1",
+		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
+		req: &http.Request{
+			Method: "GET",
+			URL: &url.URL{
+				Path: "/alo2",
+			},
+		},
+		want: false,
+	},
+	{
+		method:    "GET",
+		path:      "/alo1",
+		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
+		req: &http.Request{
+			Method: "HEAD",
+			URL: &url.URL{
+				Path: "/alo1",
+			},
+		},
+		want: false,
+	},
+	{
+		method:    "GET",
+		path:      "/alo1",
+		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
+		req: &http.Request{
+			Method: "GET",
+			URL: &url.URL{
+				Path: "/alo1",
+			},
+		},
+		want: true,
+	},
+}
+
 func BenchmarkNewNode(b *testing.B) {
 	b.Run("simple", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
@@ -115,8 +168,8 @@ func BenchmarkNewNode(b *testing.B) {
 	})
 }
 
-func TestNewNodeNormalizePath(t *testing.T) {
-	t.Run("simple", func(t *testing.T) {
+func TestNewNode(t *testing.T) {
+	t.Run("normalize_path", func(t *testing.T) {
 		for _, v := range tablenormalizePathInfo {
 			n := newNode("get", v.in, func(w http.ResponseWriter, r *http.Request) {})
 
@@ -125,15 +178,27 @@ func TestNewNodeNormalizePath(t *testing.T) {
 			}
 		}
 	})
-}
 
-func TestNewNodeNormalizeMethod(t *testing.T) {
-	t.Run("simple", func(t *testing.T) {
+	t.Run("normalize_method", func(t *testing.T) {
 		for _, v := range tableNewNodeNotEmptyExistingMethodNormalize {
 			n := newNode(v.in, "/", func(w http.ResponseWriter, r *http.Request) {})
 
 			if n.method != v.out {
 				t.Errorf("Expected %s to equal %s", v.out, n.method)
+			}
+		}
+	})
+}
+
+func TestIsItForMe(t *testing.T) {
+	t.Run("nil_request", func(t *testing.T) {
+		for _, v := range tableIsItForMe {
+			n := newNode(v.method, v.path, v.fnhandler)
+
+			r := n.isItForMe(v.req)
+
+			if v.want != r {
+				t.Errorf("Request should be resolved %t, but got %t", v.want, r)
 			}
 		}
 	})

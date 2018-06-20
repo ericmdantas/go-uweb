@@ -54,13 +54,12 @@ func (uw *UWeb) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (uw *UWeb) addNode(method, path string, handlerFn UWebHandlerFunc) {
-	n := newNode(method, path, handlerFn)
-	uw.tree = append(uw.tree, n)
+	uw.tree = append(uw.tree, newNode(method, path, handlerFn))
 }
 
 func (uw *UWeb) findHandler(r *http.Request) *Node {
 	for _, n := range uw.tree {
-		if (n.path == r.URL.Path) && (n.method == r.Method) {
+		if n.isItForMe(r) {
 			return n
 		}
 	}

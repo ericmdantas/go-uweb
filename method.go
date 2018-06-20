@@ -19,8 +19,8 @@ const (
 func normalizeMethod(verb string) string {
 	v := strings.TrimSpace(strings.ToUpper(verb))
 
-	if length := len(v); length == 0 || length > 7 {
-		panic("Invalid verb: " + v)
+	if len(v) == 0 {
+		panic("No method specified")
 	}
 
 	if (v != GET) && (v != HEAD) && (v != POST) &&
