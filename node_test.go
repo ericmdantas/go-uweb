@@ -158,6 +158,78 @@ var tableIsItForMe = []struct {
 		},
 		want: true,
 	},
+	{
+		method:    "GET",
+		path:      "/aaaaa/:wat",
+		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
+		req: &http.Request{
+			Method: "GET",
+			URL: &url.URL{
+				Path: "/yeah/aaaaa",
+			},
+		},
+		want: false,
+	},
+	{
+		method:    "GET",
+		path:      "/aaaaa/:wat.json",
+		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
+		req: &http.Request{
+			Method: "GET",
+			URL: &url.URL{
+				Path: "/yeah/aaaaa",
+			},
+		},
+		want: false,
+	},
+	{
+		method:    "GET",
+		path:      "/:wat",
+		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
+		req: &http.Request{
+			Method: "GET",
+			URL: &url.URL{
+				Path: "/yeah",
+			},
+		},
+		want: true,
+	},
+	{
+		method:    "GET",
+		path:      "/alo1/:name",
+		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
+		req: &http.Request{
+			Method: "GET",
+			URL: &url.URL{
+				Path: "/alo1/fulano",
+			},
+		},
+		want: true,
+	},
+	{
+		method:    "GET",
+		path:      "/alo1/:name/xyz999",
+		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
+		req: &http.Request{
+			Method: "GET",
+			URL: &url.URL{
+				Path: "/alo1/fulano/xyz999",
+			},
+		},
+		want: true,
+	},
+	{
+		method:    "GET",
+		path:      "/alo1/:name/xyz999/:ident",
+		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
+		req: &http.Request{
+			Method: "GET",
+			URL: &url.URL{
+				Path: "/alo1/fulano/xyz999/123something",
+			},
+		},
+		want: true,
+	},
 }
 
 func BenchmarkNewNode(b *testing.B) {
@@ -169,7 +241,7 @@ func BenchmarkNewNode(b *testing.B) {
 }
 
 func TestNewNode(t *testing.T) {
-	t.Run("normalize_path", func(t *testing.T) {
+	t.Run("simple_normalize_path", func(t *testing.T) {
 		for _, v := range tablenormalizePathInfo {
 			n := newNode("get", v.in, func(w http.ResponseWriter, r *http.Request) {})
 
@@ -179,7 +251,7 @@ func TestNewNode(t *testing.T) {
 		}
 	})
 
-	t.Run("normalize_method", func(t *testing.T) {
+	t.Run("simple_normalize_method", func(t *testing.T) {
 		for _, v := range tableNewNodeNotEmptyExistingMethodNormalize {
 			n := newNode(v.in, "/", func(w http.ResponseWriter, r *http.Request) {})
 
@@ -191,15 +263,48 @@ func TestNewNode(t *testing.T) {
 }
 
 func TestIsItForMe(t *testing.T) {
-	t.Run("nil_request", func(t *testing.T) {
+	t.Run("simple", func(t *testing.T) {
 		for _, v := range tableIsItForMe {
 			n := newNode(v.method, v.path, v.fnhandler)
 
 			r := n.isItForMe(v.req)
 
 			if v.want != r {
-				t.Errorf("Request should be resolved %t, but got %t", v.want, r)
+				t.Errorf("Request should be resolved %t, but got %t.\nMethod: node %s, req %s.\nPaths: node %s, req %s.", v.want, r, n.method, v.req.Method, n.path, v.req.URL.Path)
 			}
+		}
+	})
+}
+
+func BenchmarkIsItForMe(b *testing.B) {
+	b.Run("nil_req", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			n := newNode("GET", "/alo", func(w http.ResponseWriter, r *http.Request) {})
+			n.isItForMe(nil)
+		}
+	})
+
+	b.Run("simple_req", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			n := newNode("GET", "/alo", func(w http.ResponseWriter, r *http.Request) {})
+			n.isItForMe(&http.Request{
+				Method: "GET",
+				URL: &url.URL{
+					Path: "/alo",
+				},
+			})
+		}
+	})
+
+	b.Run("complex_req", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			n := newNode("GET", "/alo/:name/something/:id/:some_func", func(w http.ResponseWriter, r *http.Request) {})
+			n.isItForMe(&http.Request{
+				Method: "GET",
+				URL: &url.URL{
+					Path: "/alo/a/something/1/fn",
+				},
+			})
 		}
 	})
 }
