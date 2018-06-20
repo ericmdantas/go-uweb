@@ -17,8 +17,7 @@ const (
 )
 
 func normalizeMethod(verb string) string {
-	v := strings.ToUpper(verb)
-	v = strings.TrimSpace(v)
+	v := strings.TrimSpace(strings.ToUpper(verb))
 
 	if length := len(v); length == 0 || length > 7 {
 		panic("Invalid verb: " + v)
