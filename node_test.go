@@ -284,6 +284,30 @@ func BenchmarkIsItForMe(b *testing.B) {
 		}
 	})
 
+	b.Run("different_method_req", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			n := newNode("GET", "/alo", func(w http.ResponseWriter, r *http.Request) {})
+			n.isItForMe(&http.Request{
+				Method: "POST",
+				URL: &url.URL{
+					Path: "/alo",
+				},
+			})
+		}
+	})
+
+	b.Run("different_path_req", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			n := newNode("GET", "/alo0", func(w http.ResponseWriter, r *http.Request) {})
+			n.isItForMe(&http.Request{
+				Method: "GET",
+				URL: &url.URL{
+					Path: "/alo1",
+				},
+			})
+		}
+	})
+
 	b.Run("simple_req", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			n := newNode("GET", "/alo", func(w http.ResponseWriter, r *http.Request) {})

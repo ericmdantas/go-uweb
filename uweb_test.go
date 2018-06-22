@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-var tableTestAddNodes = []struct {
+var tableTestAddNodesMethods = []struct {
 	method    string
 	path      string
 	fnhandler UWebHandlerFunc
@@ -23,12 +23,96 @@ var tableTestAddNodes = []struct {
 			},
 		},
 	},
+	{
+		method:    "POST",
+		path:      "/hello_world",
+		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
+		want: []*Node{
+			{
+				method: "POST",
+				path:   "/hello_world",
+				handle: func(w http.ResponseWriter, r *http.Request) {},
+			},
+		},
+	},
+	{
+		method:    "PUT",
+		path:      "/hello_world",
+		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
+		want: []*Node{
+			{
+				method: "PUT",
+				path:   "/hello_world",
+				handle: func(w http.ResponseWriter, r *http.Request) {},
+			},
+		},
+	},
+	{
+		method:    "HEAD",
+		path:      "/hello_world",
+		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
+		want: []*Node{
+			{
+				method: "HEAD",
+				path:   "/hello_world",
+				handle: func(w http.ResponseWriter, r *http.Request) {},
+			},
+		},
+	},
+	{
+		method:    "TRACE",
+		path:      "/hello_world",
+		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
+		want: []*Node{
+			{
+				method: "TRACE",
+				path:   "/hello_world",
+				handle: func(w http.ResponseWriter, r *http.Request) {},
+			},
+		},
+	},
+	{
+		method:    "CONNECT",
+		path:      "/hello_world",
+		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
+		want: []*Node{
+			{
+				method: "CONNECT",
+				path:   "/hello_world",
+				handle: func(w http.ResponseWriter, r *http.Request) {},
+			},
+		},
+	},
 }
 
-func TestAddNode(t *testing.T) {
+func TestMethods(t *testing.T) {
 	t.Run("simple", func(t *testing.T) {
-		for _, v := range tableTestAddNodes {
+		for _, v := range tableTestAddNodesMethods {
 			u := New()
+
+			switch v.method {
+			case GET:
+				u.GET(v.path, v.fnhandler)
+				break
+			case POST:
+				u.POST(v.path, v.fnhandler)
+				break
+			case PUT:
+				u.PUT(v.path, v.fnhandler)
+				break
+			case HEAD:
+				u.HEAD(v.path, v.fnhandler)
+				break
+			case TRACE:
+				u.TRACE(v.path, v.fnhandler)
+				break
+			case CONNECT:
+				u.CONNECT(v.path, v.fnhandler)
+				break
+			case DELETE:
+				u.DELETE(v.path, v.fnhandler)
+				break
+			}
 
 			u.addNode(v.method, v.path, v.fnhandler)
 
