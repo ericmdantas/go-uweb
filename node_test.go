@@ -6,64 +6,23 @@ import (
 	"testing"
 )
 
-var tableNormalizedPath = []struct {
-	in, out string
+var tableNewNode = []struct {
+	path, wantpath, method, wantmethod string
+	wantfnhandler, fnhandler           UWebHandlerFunc
 }{
 	{
-		in:  "",
-		out: "/",
+		path:       "/alo",
+		wantpath:   "/alo",
+		method:     "GET",
+		wantmethod: "GET",
+		fnhandler:  func(w http.ResponseWriter, r *http.Request) {},
 	},
 	{
-		in:  "a",
-		out: "/a",
-	},
-	{
-		in:  "B",
-		out: "/b",
-	},
-	{
-		in:  "c/",
-		out: "/c",
-	},
-	{
-		in:  "D/",
-		out: "/d",
-	},
-	{
-		in:  "/E/",
-		out: "/e",
-	},
-	{
-		in:  "Abcdef/",
-		out: "/abcdef",
-	},
-	{
-		in:  "Abcdef/:id/:s/:x",
-		out: "/abcdef/:id/:s/:x",
-	},
-	{
-		in:  "Abcdef/:id/:s/:x",
-		out: "/abcdef/:id/:s/:x",
-	},
-	{
-		in:  "/Abcdef/",
-		out: "/abcdef",
-	},
-	{
-		in:  "/Abcdef/:id/",
-		out: "/abcdef/:id",
-	},
-	{
-		in:  "/Abcdef/:id/          ",
-		out: "/abcdef/:id",
-	},
-	{
-		in:  "        /Abcdef/:id/          ",
-		out: "/abcdef/:id",
-	},
-	{
-		in:  " /Abcdef/:id/ ",
-		out: "/abcdef/:id",
+		path:       "/alo1",
+		wantpath:   "/alo1",
+		method:     "POST",
+		wantmethod: "POST",
+		fnhandler:  func(w http.ResponseWriter, r *http.Request) {},
 	},
 }
 
@@ -200,12 +159,16 @@ func BenchmarkNewNode(b *testing.B) {
 }
 
 func TestNewNode(t *testing.T) {
-	t.Run("simple_normalize_path", func(t *testing.T) {
-		for _, v := range tablenormalizePathInfo {
-			n := newNode("get", v.in, func(w http.ResponseWriter, r *http.Request) {})
+	t.Run("simple", func(t *testing.T) {
+		for _, v := range tableNewNode {
+			n := newNode(v.method, v.path, v.fnhandler)
 
-			if n.path != v.out {
-				t.Errorf("Expected %s, but got: %s", v.out, n.path)
+			if n.path != v.wantpath {
+				t.Errorf("Expected path %s, but got: %s", v.wantpath, n.path)
+			}
+
+			if n.method != v.wantmethod {
+				t.Errorf("Expected method %s, but got: %s", v.wantmethod, n.method)
 			}
 		}
 	})
