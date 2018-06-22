@@ -109,8 +109,6 @@ func TestMethods(t *testing.T) {
 				break
 			}
 
-			u.addNode(v.method, v.path, v.fnhandler)
-
 			if u.tree[v.mapkey].method != v.want.method {
 				t.Errorf("Different method. Want %s, but got %s", v.want.method, u.tree[v.mapkey].method)
 			}
