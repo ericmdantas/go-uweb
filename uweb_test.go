@@ -8,79 +8,74 @@ import (
 var tableTestAddNodesMethods = []struct {
 	method    string
 	path      string
+	mapkey    string
 	fnhandler UWebHandlerFunc
-	want      []*Node
+	want      *Node
 }{
 	{
 		method:    "GET",
 		path:      "/hello_world",
+		mapkey:    "GET /hello_world",
 		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
-		want: []*Node{
-			{
-				method: "GET",
-				path:   "/hello_world",
-				handle: func(w http.ResponseWriter, r *http.Request) {},
-			},
+		want: &Node{
+			method: "GET",
+			path:   "/hello_world",
+			handle: func(w http.ResponseWriter, r *http.Request) {},
 		},
 	},
 	{
 		method:    "POST",
 		path:      "/hello_world",
+		mapkey:    "POST /hello_world",
 		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
-		want: []*Node{
-			{
-				method: "POST",
-				path:   "/hello_world",
-				handle: func(w http.ResponseWriter, r *http.Request) {},
-			},
+		want: &Node{
+			method: "POST",
+			path:   "/hello_world",
+			handle: func(w http.ResponseWriter, r *http.Request) {},
 		},
 	},
 	{
 		method:    "PUT",
 		path:      "/hello_world",
+		mapkey:    "PUT /hello_world",
 		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
-		want: []*Node{
-			{
-				method: "PUT",
-				path:   "/hello_world",
-				handle: func(w http.ResponseWriter, r *http.Request) {},
-			},
+		want: &Node{
+			method: "PUT",
+			path:   "/hello_world",
+			handle: func(w http.ResponseWriter, r *http.Request) {},
 		},
 	},
 	{
 		method:    "HEAD",
 		path:      "/hello_world",
+		mapkey:    "HEAD /hello_world",
 		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
-		want: []*Node{
-			{
-				method: "HEAD",
-				path:   "/hello_world",
-				handle: func(w http.ResponseWriter, r *http.Request) {},
-			},
+		want: &Node{
+			method: "HEAD",
+			path:   "/hello_world",
+			handle: func(w http.ResponseWriter, r *http.Request) {},
 		},
 	},
 	{
 		method:    "TRACE",
 		path:      "/hello_world",
+		mapkey:    "TRACE /hello_world",
 		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
-		want: []*Node{
-			{
-				method: "TRACE",
-				path:   "/hello_world",
-				handle: func(w http.ResponseWriter, r *http.Request) {},
-			},
+		want: &Node{
+			method: "TRACE",
+			path:   "/hello_world",
+			handle: func(w http.ResponseWriter, r *http.Request) {},
 		},
 	},
 	{
 		method:    "CONNECT",
 		path:      "/hello_world",
+		mapkey:    "CONNECT /hello_world",
 		fnhandler: func(w http.ResponseWriter, r *http.Request) {},
-		want: []*Node{
-			{
-				method: "CONNECT",
-				path:   "/hello_world",
-				handle: func(w http.ResponseWriter, r *http.Request) {},
-			},
+		want: &Node{
+			method: "CONNECT",
+			path:   "/hello_world",
+			handle: func(w http.ResponseWriter, r *http.Request) {},
 		},
 	},
 }
@@ -116,12 +111,12 @@ func TestMethods(t *testing.T) {
 
 			u.addNode(v.method, v.path, v.fnhandler)
 
-			if u.tree[0].method != v.want[0].method {
-				t.Errorf("Different method. Want %s, but got %s", v.want[0].method, u.tree[0].method)
+			if u.tree[v.mapkey].method != v.want.method {
+				t.Errorf("Different method. Want %s, but got %s", v.want.method, u.tree[v.mapkey].method)
 			}
 
-			if u.tree[0].path != v.want[0].path {
-				t.Errorf("Different path. Want %s, but got %s", v.want[0].path, u.tree[0].path)
+			if u.tree[v.mapkey].path != v.want.path {
+				t.Errorf("Different path. Want %s, but got %s", v.want.path, u.tree[v.mapkey].path)
 			}
 		}
 	})

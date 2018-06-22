@@ -5,11 +5,13 @@ import "net/http"
 type UWebHandlerFunc func(w http.ResponseWriter, r *http.Request)
 
 type UWeb struct {
-	tree []Node
+	tree map[string]Node
 }
 
 func New() *UWeb {
-	return &UWeb{}
+	return &UWeb{
+		tree: make(map[string]Node),
+	}
 }
 
 func (uw *UWeb) GET(path string, fn UWebHandlerFunc) {
@@ -61,13 +63,13 @@ func (uw *UWeb) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (uw *UWeb) addNode(method, path string, handlerFn UWebHandlerFunc) {
-	uw.tree = append(uw.tree, newNode(method, path, handlerFn))
+	uw.tree[method+" "+path] = newNode(method, path, handlerFn)
 }
 
 func (uw *UWeb) findHandler(r *http.Request) *Node {
-	for _, n := range uw.tree {
-		if n.isItForMe(r) {
-			return &n
+	for _, v := range uw.tree {
+		if v.isItForMe(r) {
+			return &v
 		}
 	}
 

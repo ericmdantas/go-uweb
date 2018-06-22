@@ -4,141 +4,38 @@ import (
 	"testing"
 )
 
-var tableNotEmptyExistingMethodNormalize = []struct {
-	in, out string
-}{
-	{
-		in:  "get",
-		out: "GET",
-	},
-	{
-		in:  "head",
-		out: "HEAD",
-	},
-	{
-		in:  "post",
-		out: "POST",
-	},
-	{
-		in:  "put",
-		out: "PUT",
-	},
-	{
-		in:  "options",
-		out: "OPTIONS",
-	},
-	{
-		in:  "delete",
-		out: "DELETE",
-	},
-	{
-		in:  "connect",
-		out: "CONNECT",
-	},
-	{
-		in:  "trace",
-		out: "TRACE",
-	},
-	{
-		in:  "patch",
-		out: "PATCH",
-	},
-}
-
-var tableExistingMethodWithSillyErrorsNormalize = []struct {
-	in, out string
-}{
-	{
-		in:  "get    ",
-		out: "GET",
-	},
-	{
-		in:  "     head     ",
-		out: "HEAD",
-	},
-	{
-		in:  "   post ",
-		out: "POST",
-	},
-	{
-		in:  "pUt",
-		out: "PUT",
-	},
-	{
-		in:  "opTIons ",
-		out: "OPTIONS",
-	},
-	{
-		in:  "deLete",
-		out: "DELETE",
-	},
-	{
-		in:  "connecT",
-		out: "CONNECT",
-	},
-	{
-		in:  "tracE",
-		out: "TRACE",
-	},
-	{
-		in:  "patcH",
-		out: "PATCH",
-	},
-}
-
-var tableNotExistingMethods = []string{
-	"",
-	"git",
-	"headi",
-	"hea",
-	"heas",
-	"putz",
-}
-
-func BenchmarkNormalizeMethod(b *testing.B) {
-	b.Run("simple", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			normalizeMethod("get    ")
+func TestExistingMethods(t *testing.T) {
+	t.Run("should_check_existing_methods", func(t *testing.T) {
+		if GET != "GET" {
+			t.Errorf("GET is incorrect: %s", GET)
 		}
-	})
-}
 
-func TestNormalizeExistingMethods(t *testing.T) {
-	t.Run("existing_methods", func(t *testing.T) {
-		for _, v := range tableNotEmptyExistingMethodNormalize {
-			r := normalizeMethod(v.in)
-
-			if r != v.out {
-				t.Errorf("Expected %s to equal %s", v.out, r)
-			}
+		if POST != "POST" {
+			t.Errorf("POST is incorrect: %s", POST)
 		}
-	})
 
-	t.Run("methods_silly_errors", func(t *testing.T) {
-		for _, v := range tableExistingMethodWithSillyErrorsNormalize {
-			r := normalizeMethod(v.in)
-
-			if r != v.out {
-				t.Errorf("Expected %s, but got: %s", v.out, r)
-			}
+		if PUT != "PUT" {
+			t.Errorf("PUT is incorrect: %s", PUT)
 		}
-	})
 
-	t.Run("non_existant_methods", func(t *testing.T) {
-		for _, v := range tableNotExistingMethods {
-			var err interface{}
+		if HEAD != "HEAD" {
+			t.Errorf("HEAD is incorrect: %s", HEAD)
+		}
 
-			defer func() {
-				if err == nil {
-					t.Errorf("Should've paniced")
-				}
-			}()
+		if DELETE != "DELETE" {
+			t.Errorf("DELETE is incorrect: %s", DELETE)
+		}
 
-			defer func() {
-				err = recover()
-			}()
+		if TRACE != "TRACE" {
+			t.Errorf("TRACE is incorrect: %s", TRACE)
+		}
 
-			normalizeMethod(v)
+		if CONNECT != "CONNECT" {
+			t.Errorf("CONNECT is incorrect: %s", CONNECT)
+		}
+
+		if OPTIONS != "OPTIONS" {
+			t.Errorf("OPTIONS is incorrect: %s", OPTIONS)
 		}
 	})
 }

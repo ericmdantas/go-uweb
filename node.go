@@ -11,8 +11,8 @@ const (
 
 func newNode(method, path string, fn UWebHandlerFunc) Node {
 	return Node{
-		method: normalizeMethod(method),
 		path:   normalizePath(path),
+		method: method,
 		handle: fn,
 	}
 }
