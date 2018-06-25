@@ -24,11 +24,7 @@ type Node struct {
 }
 
 func (n Node) isItForMe(r *http.Request) bool {
-	if r == nil {
-		return false
-	}
-
-	if n.method != r.Method {
+	if r == nil || n.method != r.Method {
 		return false
 	}
 
