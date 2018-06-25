@@ -49,5 +49,7 @@ func (n Node) isItForMe(r *http.Request) bool {
 		mountedPathParts = append(mountedPathParts, nodePathPartsWithtoutSlashes[index])
 	}
 
-	return strings.Join(mountedPathParts, "/") == r.URL.Path
+	mountedPath := strings.Join(mountedPathParts, "/")
+
+	return mountedPath == r.URL.Path
 }
