@@ -41,12 +41,12 @@ func (n Node) isItForMe(r *http.Request) bool {
 	var mountedPathParts []string
 
 	for index, nodePathPart := range nodePathPartsWithtoutSlashes {
-		if strings.Contains(nodePathPart, maskIdentifier) {
-			mountedPathParts = append(mountedPathParts, requestPathPartsWithtoutSlashes[index])
+		if !strings.Contains(nodePathPart, maskIdentifier) {
+			mountedPathParts = append(mountedPathParts, nodePathPartsWithtoutSlashes[index])
 			continue
 		}
 
-		mountedPathParts = append(mountedPathParts, nodePathPartsWithtoutSlashes[index])
+		mountedPathParts = append(mountedPathParts, requestPathPartsWithtoutSlashes[index])
 	}
 
 	mountedPath := strings.Join(mountedPathParts, "/")
