@@ -232,7 +232,7 @@ func BenchmarkIsItForMe(b *testing.B) {
 		}
 	})
 
-	b.Run("simple_req_with_query_params", func(b *testing.B) {
+	b.Run("simple_req_with_querystrings", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			n := newNode("GET", "/alo?a=1", func(w http.ResponseWriter, r *http.Request) {})
 			n.isItForMe(&http.Request{
@@ -256,7 +256,7 @@ func BenchmarkIsItForMe(b *testing.B) {
 		}
 	})
 
-	b.Run("complex_req_with_query_params", func(b *testing.B) {
+	b.Run("complex_req_with_querystrings", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			n := newNode("GET", "/alo/:name/something/:id/:some_func?a=1&b=2&c=3", func(w http.ResponseWriter, r *http.Request) {})
 			n.isItForMe(&http.Request{
