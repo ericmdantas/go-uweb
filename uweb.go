@@ -5,12 +5,12 @@ import "net/http"
 type UWebHandlerFunc func(w http.ResponseWriter, r *http.Request)
 
 type UWeb struct {
-	tree map[string]Node
+	nodeMap map[string]Node
 }
 
 func New() UWeb {
 	return UWeb{
-		tree: make(map[string]Node),
+		nodeMap: make(map[string]Node),
 	}
 }
 
@@ -64,11 +64,11 @@ func (uw UWeb) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func (uw UWeb) addNode(method, path string, handlerFn UWebHandlerFunc) {
 	pathNormalized := normalizePath(path)
-	uw.tree[method+" "+pathNormalized] = newNode(method, pathNormalized, handlerFn)
+	uw.nodeMap[method+" "+pathNormalized] = newNode(method, pathNormalized, handlerFn)
 }
 
 func (uw UWeb) findHandler(r *http.Request) *Node {
-	for _, v := range uw.tree {
+	for _, v := range uw.nodeMap {
 		if v.isItForMe(r) {
 			return &v
 		}

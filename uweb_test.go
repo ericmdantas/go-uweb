@@ -109,12 +109,12 @@ func TestMethods(t *testing.T) {
 				break
 			}
 
-			if u.tree[v.mapkey].method != v.want.method {
-				t.Errorf("Different method. Want %s, but got %s", v.want.method, u.tree[v.mapkey].method)
+			if u.nodeMap[v.mapkey].method != v.want.method {
+				t.Errorf("Different method. Want %s, but got %s", v.want.method, u.nodeMap[v.mapkey].method)
 			}
 
-			if u.tree[v.mapkey].path != v.want.path {
-				t.Errorf("Different path. Want %s, but got %s", v.want.path, u.tree[v.mapkey].path)
+			if u.nodeMap[v.mapkey].path != v.want.path {
+				t.Errorf("Different path. Want %s, but got %s", v.want.path, u.nodeMap[v.mapkey].path)
 			}
 		}
 	})
