@@ -59,7 +59,6 @@ func (uw UWeb) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusNotFound)
-	w.Write([]byte("404"))
 }
 
 func (uw UWeb) addNode(method, path string, handlerFn UWebHandlerFunc) {
