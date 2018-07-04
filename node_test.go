@@ -246,11 +246,11 @@ func BenchmarkIsItForMe(b *testing.B) {
 
 	b.Run("complex_req", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			n := newNode("GET", "/alo/:name/something/:id/:some_func", func(w http.ResponseWriter, r *http.Request) {})
+			n := newNode("GET", "/alo/:name/something/:id/:some_func/:something_else/:wat/:yes", func(w http.ResponseWriter, r *http.Request) {})
 			n.isItForMe(&http.Request{
 				Method: "GET",
 				URL: &url.URL{
-					Path: "/alo/a/something/1/fn",
+					Path: "/alo/a/something/1/fn/123/abc/true",
 				},
 			})
 		}
@@ -258,11 +258,11 @@ func BenchmarkIsItForMe(b *testing.B) {
 
 	b.Run("complex_req_with_querystrings", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			n := newNode("GET", "/alo/:name/something/:id/:some_func?a=1&b=2&c=3", func(w http.ResponseWriter, r *http.Request) {})
+			n := newNode("GET", "/alo/:name/something/:id/:some_func/:something_else/:wat/:yes?a=1&b=2&c=3", func(w http.ResponseWriter, r *http.Request) {})
 			n.isItForMe(&http.Request{
 				Method: "GET",
 				URL: &url.URL{
-					Path: "/alo/a/something/1/fn?a=1&b=2&c=3",
+					Path: "/alo/a/something/1/fn/123/abc/true?a=1&b=2&c=3",
 				},
 			})
 		}
