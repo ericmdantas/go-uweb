@@ -178,7 +178,6 @@ func TestIsItForMe(t *testing.T) {
 	t.Run("simple", func(t *testing.T) {
 		for _, v := range tableIsItForMe {
 			n := newNode(v.method, v.path, v.fnhandler)
-
 			r := n.isItForMe(v.req)
 
 			if v.want != r {
