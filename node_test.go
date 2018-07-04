@@ -243,6 +243,30 @@ func BenchmarkIsItForMe(b *testing.B) {
 		}
 	})
 
+	b.Run("simple_req_with_path_param", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			n := newNode("GET", "/alo/:id", func(w http.ResponseWriter, r *http.Request) {})
+			n.isItForMe(&http.Request{
+				Method: "GET",
+				URL: &url.URL{
+					Path: "/alo/1",
+				},
+			})
+		}
+	})
+
+	b.Run("simple_req_with_path_param_and_querystrings", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			n := newNode("GET", "/alo/:id?a=1", func(w http.ResponseWriter, r *http.Request) {})
+			n.isItForMe(&http.Request{
+				Method: "GET",
+				URL: &url.URL{
+					Path: "/alo/1?a=1",
+				},
+			})
+		}
+	})
+
 	b.Run("complex_req", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			n := newNode("GET", "/alo/:name/something/:id/:some_func/:something_else/:wat/:yes", func(w http.ResponseWriter, r *http.Request) {})
